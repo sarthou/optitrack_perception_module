@@ -1,0 +1,11 @@
+<library path="lib/liboptitrack_perception_module">
+
+  <class type="owds::OptitrackPerceptionModule" base_class_type="owds::PerceptionModuleBase_<owds::BodyPart>">
+    <description>
+      A human perception module using the Optitrack mocap system.
+      Possible parameters are: name, offset_x,
+      offset_y, offset_z.
+    </description>
+  </class>
+
+</library>
