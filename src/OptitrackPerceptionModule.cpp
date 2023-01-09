@@ -63,36 +63,36 @@ bool OptitrackPerceptionModule::closeInitialization()
     percepts_.emplace(head_name_, head_name_);
     percepts_.at(head_name_).setAgentName(human_name_);
     percepts_.at(head_name_).setType(BodyPartType_e::BODY_PART_HEAD);
-    Shape_t head_shape = PerceptionModuleBase_::getEntityShapeFromOntology(onto_, head_name_);
+    Shape_t head_shape = ontology::getEntityShape(onto_, head_name_);
     if(head_shape.type == SHAPE_NONE)
     {
         head_shape.type = SHAPE_SPEHERE;
         head_shape.scale = {0.12, 0.15, 0.2};
-        head_shape.color = PerceptionModuleBase_::getEntityColorFromOntology(onto_, head_name_, default_color);
+        head_shape.color = ontology::getEntityColor(onto_, head_name_, default_color);
     }
     percepts_.at(head_name_).setShape(head_shape);
 
     percepts_.emplace(left_hand_name_, left_hand_name_);
     percepts_.at(left_hand_name_).setAgentName(human_name_);
     percepts_.at(left_hand_name_).setType(BodyPartType_e::BODY_PART_LEFT_HAND);
-    Shape_t left_hand_shape = PerceptionModuleBase_::getEntityShapeFromOntology(onto_, left_hand_name_);
+    Shape_t left_hand_shape = ontology::getEntityShape(onto_, left_hand_name_);
     if(left_hand_shape.type == SHAPE_NONE)
     {
         left_hand_shape.type = SHAPE_CUBE;
         left_hand_shape.scale = {0.10, 0.03, 0.18};
-        left_hand_shape.color = PerceptionModuleBase_::getEntityColorFromOntology(onto_, left_hand_name_, default_color);
+        left_hand_shape.color = ontology::getEntityColor(onto_, left_hand_name_, default_color);
     }
     percepts_.at(left_hand_name_).setShape(left_hand_shape);
 
     percepts_.emplace(right_hand_name_, right_hand_name_);
     percepts_.at(right_hand_name_).setAgentName(human_name_);
     percepts_.at(right_hand_name_).setType(BodyPartType_e::BODY_PART_RIGHT_HAND);
-    Shape_t right_hand_shape = PerceptionModuleBase_::getEntityShapeFromOntology(onto_, right_hand_name_);
+    Shape_t right_hand_shape = ontology::getEntityShape(onto_, right_hand_name_);
     if(right_hand_shape.type == SHAPE_NONE)
     {
         right_hand_shape.type = SHAPE_CUBE;
         right_hand_shape.scale = {0.10, 0.03, 0.18};
-        right_hand_shape.color = PerceptionModuleBase_::getEntityColorFromOntology(onto_, right_hand_name_, default_color);
+        right_hand_shape.color = ontology::getEntityColor(onto_, right_hand_name_, default_color);
     }
     percepts_.at(right_hand_name_).setShape(right_hand_shape);
 
