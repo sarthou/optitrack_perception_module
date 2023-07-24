@@ -30,8 +30,8 @@ class OptitrackPerceptionModule : public PerceptionModuleBase_<BodyPart>
   protected:
     bool perceptionCallback(const BodyPartOptitrackPose& msg);
 
-    OntologiesManipulator* ontologies_manipulator_;
-    OntologyManipulator* onto_;
+    onto::OntologiesManipulator* ontologies_manipulator_;
+    onto::OntologyManipulator* onto_;
     double offset_x_;
     double offset_y_;
     double offset_z_;
