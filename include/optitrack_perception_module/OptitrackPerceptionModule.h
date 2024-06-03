@@ -8,30 +8,31 @@
 
 #include "ontologenius/OntologiesManipulator.h"
 
-namespace owds {
-
-typedef std::pair<BodyPartType_e, optitrack_msgs::or_pose_estimator_state> BodyPartOptitrackPose;
-
-class OptitrackPerceptionModule : public PerceptionModuleBase_<BodyPart>
+namespace owds
 {
+
+  typedef std::pair<BodyPartType_e, optitrack_msgs::or_pose_estimator_state> BodyPartOptitrackPose;
+
+  class OptitrackPerceptionModule : public PerceptionModuleBase_<BodyPart>
+  {
   public:
     OptitrackPerceptionModule();
 
-    virtual void setParameter(const std::string& parameter_name, const std::string& parameter_value) override;
+    virtual void setParameter(const std::string &parameter_name, const std::string &parameter_value) override;
     virtual bool closeInitialization() override;
 
   private:
-    void headRosCallback(const optitrack_msgs::or_pose_estimator_state& msg);
-    void leftHandRosCallback(const optitrack_msgs::or_pose_estimator_state& msg);
-    void rightHandRosCallback(const optitrack_msgs::or_pose_estimator_state& msg);
+    void headRosCallback(const optitrack_msgs::or_pose_estimator_state &msg);
+    void leftHandRosCallback(const optitrack_msgs::or_pose_estimator_state &msg);
+    void rightHandRosCallback(const optitrack_msgs::or_pose_estimator_state &msg);
 
-    void privatePerceptionCallback(const BodyPartOptitrackPose& msg);
+    void privatePerceptionCallback(const BodyPartOptitrackPose &msg);
 
   protected:
-    bool perceptionCallback(const BodyPartOptitrackPose& msg);
+    bool perceptionCallback(const BodyPartOptitrackPose &msg);
 
-    onto::OntologiesManipulator* ontologies_manipulator_;
-    onto::OntologyManipulator* onto_;
+    onto::OntologiesManipulator *ontologies_manipulator_;
+    onto::OntologyManipulator *onto_;
     double offset_x_;
     double offset_y_;
     double offset_z_;
@@ -43,7 +44,7 @@ class OptitrackPerceptionModule : public PerceptionModuleBase_<BodyPart>
     ros::Subscriber optitrack_head_sub_;
     ros::Subscriber optitrack_left_hand_sub_;
     ros::Subscriber optitrack_right_hand_sub_;
-};
+  };
 
 } // namespace owds
 
