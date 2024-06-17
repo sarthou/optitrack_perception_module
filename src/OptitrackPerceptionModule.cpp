@@ -4,39 +4,40 @@
 
 #include <pluginlib/class_list_macros.h>
 
-namespace owds {
-
-OptitrackPerceptionModule::OptitrackPerceptionModule() : ontologies_manipulator_(nullptr),
-                                                         onto_(nullptr)
+namespace owds
 {
+
+  OptitrackPerceptionModule::OptitrackPerceptionModule() : ontologies_manipulator_(nullptr),
+                                                           onto_(nullptr)
+  {
     offset_x_ = 0;
     offset_y_ = 0;
     offset_z_ = 0;
-}
+  }
 
-void OptitrackPerceptionModule::setParameter(const std::string& parameter_name, const std::string& parameter_value)
-{
-    if(parameter_name == "name")
-        human_name_ = parameter_value;
-    else if(parameter_name == "offset_x")
-        offset_x_ = std::stod(parameter_value);
-    else if(parameter_name == "offset_y")
-        offset_y_ = std::stod(parameter_value);
-    else if(parameter_name == "offset_z")
-        offset_z_ = std::stod(parameter_value);
+  void OptitrackPerceptionModule::setParameter(const std::string &parameter_name, const std::string &parameter_value)
+  {
+    if (parameter_name == "name")
+      human_name_ = parameter_value;
+    else if (parameter_name == "offset_x")
+      offset_x_ = std::stod(parameter_value);
+    else if (parameter_name == "offset_y")
+      offset_y_ = std::stod(parameter_value);
+    else if (parameter_name == "offset_z")
+      offset_z_ = std::stod(parameter_value);
     else
-        ShellDisplay::warning("[OptitrackPerceptionModule] Unkown parameter " + parameter_name);
-}
+      ShellDisplay::warning("[OptitrackPerceptionModule] Unkown parameter " + parameter_name);
+  }
 
-bool OptitrackPerceptionModule::closeInitialization()
-{
-    if(human_name_ == "")
+  bool OptitrackPerceptionModule::closeInitialization()
+  {
+    if (human_name_ == "")
     {
-        ShellDisplay::error("[OptitrackPerceptionModule] No human name has been defined");
-        return false;
+      ShellDisplay::error("[OptitrackPerceptionModule] No human name has been defined");
+      return false;
     }
 
-    mocap_offset_ = Pose({offset_x_, offset_y_, offset_z_}, {0,0,0,1});
+    mocap_offset_ = Pose({offset_x_, offset_y_, offset_z_}, {0, 0, 0, 1});
 
     ontologies_manipulator_ = new onto::OntologiesManipulator();
     ontologies_manipulator_->waitInit();
@@ -50,8 +51,8 @@ bool OptitrackPerceptionModule::closeInitialization()
 
     if (head_names.size() == 0 || left_hand_names.size() == 0 || right_hand_names.size() == 0)
     {
-        ShellDisplay::error("No body part defined in the ontology for human: '" + human_name_ + "'.");
-        throw std::runtime_error("No body part defined in the ontology for human: '" + human_name_ + "'.");
+      ShellDisplay::error("No body part defined in the ontology for human: '" + human_name_ + "'.");
+      throw std::runtime_error("No body part defined in the ontology for human: '" + human_name_ + "'.");
     }
 
     head_name_ = head_names.at(0);
@@ -64,11 +65,11 @@ bool OptitrackPerceptionModule::closeInitialization()
     percepts_.at(head_name_).setAgentName(human_name_);
     percepts_.at(head_name_).setType(BodyPartType_e::BODY_PART_HEAD);
     Shape_t head_shape = ontology::getEntityShape(onto_, head_name_);
-    if(head_shape.type == SHAPE_NONE)
+    if (head_shape.type == SHAPE_NONE)
     {
-        head_shape.type = SHAPE_SPEHERE;
-        head_shape.scale = {0.12, 0.15, 0.2};
-        head_shape.color = ontology::getEntityColor(onto_, head_name_, default_color);
+      head_shape.type = SHAPE_SPEHERE;
+      head_shape.scale = {0.12, 0.15, 0.2};
+      head_shape.color = ontology::getEntityColor(onto_, head_name_, default_color);
     }
     percepts_.at(head_name_).setShape(head_shape);
 
@@ -76,11 +77,11 @@ bool OptitrackPerceptionModule::closeInitialization()
     percepts_.at(left_hand_name_).setAgentName(human_name_);
     percepts_.at(left_hand_name_).setType(BodyPartType_e::BODY_PART_LEFT_HAND);
     Shape_t left_hand_shape = ontology::getEntityShape(onto_, left_hand_name_);
-    if(left_hand_shape.type == SHAPE_NONE)
+    if (left_hand_shape.type == SHAPE_NONE)
     {
-        left_hand_shape.type = SHAPE_CUBE;
-        left_hand_shape.scale = {0.10, 0.03, 0.18};
-        left_hand_shape.color = ontology::getEntityColor(onto_, left_hand_name_, default_color);
+      left_hand_shape.type = SHAPE_CUBE;
+      left_hand_shape.scale = {0.10, 0.03, 0.18};
+      left_hand_shape.color = ontology::getEntityColor(onto_, left_hand_name_, default_color);
     }
     percepts_.at(left_hand_name_).setShape(left_hand_shape);
 
@@ -88,11 +89,11 @@ bool OptitrackPerceptionModule::closeInitialization()
     percepts_.at(right_hand_name_).setAgentName(human_name_);
     percepts_.at(right_hand_name_).setType(BodyPartType_e::BODY_PART_RIGHT_HAND);
     Shape_t right_hand_shape = ontology::getEntityShape(onto_, right_hand_name_);
-    if(right_hand_shape.type == SHAPE_NONE)
+    if (right_hand_shape.type == SHAPE_NONE)
     {
-        right_hand_shape.type = SHAPE_CUBE;
-        right_hand_shape.scale = {0.10, 0.03, 0.18};
-        right_hand_shape.color = ontology::getEntityColor(onto_, right_hand_name_, default_color);
+      right_hand_shape.type = SHAPE_CUBE;
+      right_hand_shape.scale = {0.10, 0.03, 0.18};
+      right_hand_shape.color = ontology::getEntityColor(onto_, right_hand_name_, default_color);
     }
     percepts_.at(right_hand_name_).setShape(right_hand_shape);
 
@@ -101,13 +102,13 @@ bool OptitrackPerceptionModule::closeInitialization()
     optitrack_right_hand_sub_ = n_->subscribe("/optitrack/bodies/" + right_hand_name_, 1, &OptitrackPerceptionModule::rightHandRosCallback, this);
 
     return true;
-}
+  }
 
-bool OptitrackPerceptionModule::perceptionCallback(const BodyPartOptitrackPose& msg)
-{
+  bool OptitrackPerceptionModule::perceptionCallback(const BodyPartOptitrackPose &msg)
+  {
     if (msg.second.pos.size() == 0)
     {
-        return false;
+      return false;
     }
     auto optipos = msg.second.pos[0];
     auto optiatt = msg.second.att[0];
@@ -117,50 +118,51 @@ bool OptitrackPerceptionModule::perceptionCallback(const BodyPartOptitrackPose& 
     switch (msg.first)
     {
     case BodyPartType_e::BODY_PART_HEAD:
-        percepts_.at(head_name_).updatePose(p, stamp);
-        return true;
-        break;
+      percepts_.at(head_name_).updatePose(p, stamp);
+      return true;
+      break;
     case BodyPartType_e::BODY_PART_LEFT_HAND:
-        percepts_.at(left_hand_name_).updatePose(p, stamp);
-        return true;
-        break;
+      percepts_.at(left_hand_name_).updatePose(p, stamp);
+      return true;
+      break;
     case BodyPartType_e::BODY_PART_RIGHT_HAND:
-        percepts_.at(right_hand_name_).updatePose(p, stamp);
-        return true;
-        break;
+      percepts_.at(right_hand_name_).updatePose(p, stamp);
+      return true;
+      break;
     default:
-        return false;
-        break;
+      return false;
+      break;
     }
     return false;
-}
+  }
 
-void OptitrackPerceptionModule::headRosCallback(const optitrack_msgs::or_pose_estimator_state& msg)
-{
+  void OptitrackPerceptionModule::headRosCallback(const optitrack_msgs::or_pose_estimator_state &msg)
+  {
     privatePerceptionCallback(std::make_pair(BodyPartType_e::BODY_PART_HEAD, msg));
-}
+  }
 
-void OptitrackPerceptionModule::leftHandRosCallback(const optitrack_msgs::or_pose_estimator_state& msg)
-{
+  void OptitrackPerceptionModule::leftHandRosCallback(const optitrack_msgs::or_pose_estimator_state &msg)
+  {
     privatePerceptionCallback(std::make_pair(BodyPartType_e::BODY_PART_LEFT_HAND, msg));
-}
+  }
 
-void OptitrackPerceptionModule::rightHandRosCallback(const optitrack_msgs::or_pose_estimator_state& msg)
-{
+  void OptitrackPerceptionModule::rightHandRosCallback(const optitrack_msgs::or_pose_estimator_state &msg)
+  {
     privatePerceptionCallback(std::make_pair(BodyPartType_e::BODY_PART_RIGHT_HAND, msg));
-}
+  }
 
-void OptitrackPerceptionModule::privatePerceptionCallback(const BodyPartOptitrackPose& msg){
-    if(!this->is_activated_)
+  void OptitrackPerceptionModule::privatePerceptionCallback(const BodyPartOptitrackPose &msg)
+  {
+    if (!this->is_activated_)
       return;
 
     this->mutex_perception_.lock();
     this->mutex_access_.lock();
     this->mutex_perception_.unlock();
-    if(perceptionCallback(msg))
+    if (perceptionCallback(msg))
       this->updated_ = true;
     this->mutex_access_.unlock();
-}
+  }
 
 } // namespace owds
 
