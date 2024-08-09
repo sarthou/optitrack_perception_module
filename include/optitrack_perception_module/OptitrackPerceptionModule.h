@@ -1,12 +1,12 @@
 #ifndef OWDS_OPTITRACKPERCEPTIONMODULE_H
 #define OWDS_OPTITRACKPERCEPTIONMODULE_H
 
+#include "ontologenius/OntologiesManipulator.h"
+
 #include "overworld/BasicTypes/BodyPart.h"
 #include "overworld/Perception/Modules/PerceptionModuleBase.h"
 
-#include <optitrack_msgs/or_pose_estimator_state.h>
-
-#include "ontologenius/OntologiesManipulator.h"
+#include "optitrack_msgs/or_pose_estimator_state.h"
 
 namespace owds {
 
