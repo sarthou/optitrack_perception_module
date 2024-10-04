@@ -118,14 +118,17 @@ namespace owds
     switch (msg.first)
     {
     case BodyPartType_e::BODY_PART_HEAD:
+      percepts_.at(head_name_).setSeen();
       percepts_.at(head_name_).updatePose(p, stamp);
       return true;
       break;
     case BodyPartType_e::BODY_PART_LEFT_HAND:
+      percepts_.at(left_hand_name_).setSeen(); 
       percepts_.at(left_hand_name_).updatePose(p, stamp);
       return true;
       break;
     case BodyPartType_e::BODY_PART_RIGHT_HAND:
+      percepts_.at(right_hand_name_).setSeen();
       percepts_.at(right_hand_name_).updatePose(p, stamp);
       return true;
       break;
