@@ -1,6 +1,6 @@
 #include "optitrack_perception_module/OptitrackPerceptionModule.h"
 
-#include "overworld/Utility/ShellDisplay.h"
+#include "overworld/Utils/ShellDisplay.h"
 
 #include <pluginlib/class_list_macros.h>
 
@@ -59,7 +59,7 @@ namespace owds
     left_hand_name_ = left_hand_names.at(0);
     right_hand_name_ = right_hand_names.at(0);
 
-    std::array<double, 3> default_color = {0.976470588, 0.894117647, 0.717647059};
+    std::array<double, 4> default_color = {0.976470588, 0.894117647, 0.717647059, 1.0};
 
     percepts_.emplace(head_name_, head_name_);
     percepts_.at(head_name_).setAgentName(human_name_);
