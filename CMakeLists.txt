@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10.0)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 project(optitrack_perception_module)
 
-add_compile_options(-std=c++14)
+add_compile_options(-std=c++17)
 
 find_package(catkin REQUIRED COMPONENTS
   optitrack_msgs
@@ -25,8 +25,10 @@ add_library(${PROJECT_NAME}
   src/OptitrackPerceptionModule.cpp
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
-                      ${catkin_LIBRARIES}
-                      ${overworld_LIBRARIES}
-                      ${ontologenius_LIBRARIES}
-                      ontologenius::ontologenius_compat)
+  ${catkin_LIBRARIES}
+  ${overworld_LIBRARIES}
+  ${ontologenius_LIBRARIES})
+
+# ontologenius::ontologenius_compat)
 add_dependencies(${PROJECT_NAME} optitrack_msgs_generate_messages_cpp)
+target_compile_definitions(${PROJECT_NAME} PUBLIC OWDS_ROS_VERSION=$ENV{ROS_VERSION})
